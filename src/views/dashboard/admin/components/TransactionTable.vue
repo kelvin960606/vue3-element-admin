@@ -6,11 +6,13 @@
       </template>
     </el-table-column>
     <el-table-column label="Price" width="195" align="center">
+
       <template v-slot="scope">
         ¥{{ displayPrice(scope) }}
       </template>
     </el-table-column>
     <el-table-column label="Status" width="100" align="center">
+
       <template v-slot="{ row }">
         <el-tag :type="displayType(row)">
           {{ row.status }}
@@ -56,9 +58,9 @@ export default defineComponent({
       return this.statusFilter(row.status);
     },
     fetchData() {
-      transactionList().then(response => {
-        this.list = response.data.items.slice(0, 8);
-      });
+      // transactionList().then(response => {
+      //   this.list = response.data.items.slice(0, 8);
+      // });
     }
   }
 });

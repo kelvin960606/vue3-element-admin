@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@lbgm/phone-number-input": "^1.1.6-alpha.2",
     "axios": "1.2.1",
     "clipboard": "2.0.11",
     "driver.js": "0.9.8",

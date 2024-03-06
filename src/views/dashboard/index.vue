@@ -24,9 +24,9 @@ export default defineComponent({
   },
   created() {
     console.log('dashboard created');
-    if (!this.roles.includes('admin')) {
-      this.currentRole = 'editorDashboard';
-    }
+    // if (!this.roles.includes('admin')) {
+    //   this.currentRole = 'adminDashboard';
+    // }
   }
 });
 </script>

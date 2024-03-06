@@ -16,26 +16,26 @@ export interface IUserState {
 
 export default defineStore({
   id: 'user',
-  state: ():IUserState => ({
+  state: (): IUserState => ({
     token: getToken(),
     userId: '',
     name: '',
     avatar: '',
     introduction: '',
-    roles: []
+    roles: ['admin']
   }),
   getters: {},
   actions: {
     // user login
-    login(userInfo):Promise<void> {
-      const { username, password } = userInfo;
+    login(userInfo): Promise<void> {
+      const { country, mobile, password } = userInfo;
       return new Promise((resolve, reject) => {
-        apiLogin({ username: username.trim(), password: password }).then(response => {
-          const { data } = response;
-          this.token = data.token;
-          setToken(data.token);
+        apiLogin({ country: country, mobile: mobile.trim(), code: password, type: 'sms' }).then(response => {
+          this.token = response['token'];
+          setToken(response['token']);
           resolve();
         }).catch(error => {
+          console.log('error', error);
           reject(error);
         });
       });
@@ -44,24 +44,24 @@ export default defineStore({
     // get user info
     getInfo() {
       return new Promise((resolve, reject) => {
-        apiGetInfo(this.token).then(response => {
+        apiGetInfo().then(response => {
           const { data } = response;
 
           if (!data) {
             reject('Verification failed, please Login again.');
           }
 
-          const { roles, name, avatar, introduction } = data;
+          const { account } = data;
 
-          // roles must be a non-empty array
-          if (!roles || roles.length <= 0) {
-            reject('getInfo: roles must be a non-null array!');
-          }
+          // // roles must be a non-empty array
+          // if (!roles || roles.length <= 0) {
+          //   reject('getInfo: roles must be a non-null array!');
+          // }
 
-          this.roles = roles;
-          this.name = name;
-          this.avatar = avatar;
-          this.introduction = introduction;
+          // this.roles = roles;
+          this.name = account.email;
+          // this.avatar = avatar;
+          // this.introduction = introduction;
           resolve(data);
         }).catch(error => {
           reject(error);
@@ -70,7 +70,7 @@ export default defineStore({
     },
 
     // user logout
-    logout():Promise<void> {
+    logout(): Promise<void> {
       return new Promise((resolve, reject) => {
         apiLogout(this.token).then(() => {
           this.token = '';
